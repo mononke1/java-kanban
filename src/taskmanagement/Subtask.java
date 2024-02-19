@@ -1,7 +1,5 @@
 package taskmanagement;
 
-import taskmanagement.Task;
-
 public class Subtask extends Task {
     private String epicName;
     private int ID;
