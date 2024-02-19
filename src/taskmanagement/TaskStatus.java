@@ -1,3 +1,5 @@
+package taskmanagement;
+
 public enum TaskStatus {
     NEW,
     IN_PROGRESS,

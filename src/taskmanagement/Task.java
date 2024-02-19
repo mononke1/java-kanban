@@ -1,3 +1,5 @@
+package taskmanagement;
+
 import java.util.Objects;
 
 public class Task {
@@ -71,7 +73,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return  "Task{" +
+        return  "taskmanagement.Task{" +
                 "taskName='" + name + '\'' +
                 ", taskDescription='" + description + '\'' +
                 ", taskStatus=" + status +
