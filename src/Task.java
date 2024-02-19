@@ -1,9 +1,9 @@
 import java.util.Objects;
 
 public class Task {
-    public String name;
-    public String description;
-    public TaskStatus status;
+    private String name;
+    private String description;
+    private TaskStatus status;
     private int ID;
 
     public Task(String name, String description) {
@@ -30,6 +30,30 @@ public class Task {
 
     public int getID() {
         return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override
