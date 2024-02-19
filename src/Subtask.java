@@ -1,5 +1,5 @@
 public class Subtask extends Task {
-    public String epicName;
+    private String epicName;
     private int ID;
 
     public Subtask(String name, String description, TaskStatus status, String epicName) {
@@ -17,6 +17,14 @@ public class Subtask extends Task {
         this.ID = ID;
     }
 
+    public String getEpicName() {
+        return epicName;
+    }
+
+    public void setEpicName(String epicName) {
+        this.epicName = epicName;
+    }
+
     public int getID() {
         return ID;
     }
@@ -26,9 +34,9 @@ public class Subtask extends Task {
         return "Subtask{" +
                 "epicName='" + epicName + '\'' +
                 ", subtaskID=" + ID +
-                ", subtaskName='" + name + '\'' +
-                ", subtaskDescription='" + description + '\'' +
-                ", subtaskStatus=" + status +
+                ", subtaskName='" + getName() + '\'' +
+                ", subtaskDescription='" + getDescription() + '\'' +
+                ", subtaskStatus=" + getStatus() +
                 '}';
     }
 }
