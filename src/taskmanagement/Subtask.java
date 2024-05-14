@@ -1,41 +1,36 @@
 package taskmanagement;
 
+
 public class Subtask extends Task {
-    private String epicName;
-    private int ID;
+    private int epicId;
 
-    public Subtask(String name, String description, TaskStatus status, String epicName) {
+    public Subtask(String name, String description, TaskStatus status) {
         super(name, description, status);
-        this.epicName = epicName;
     }
 
-    public Subtask(String name, String description, TaskStatus status, String epicName, int ID) {
+    public Subtask(String name, String description, TaskStatus status, int epicId) {
         super(name, description, status);
-        this.epicName = epicName;
-        this.ID = ID;
+        this.epicId = epicId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public Subtask(String name, String description, TaskStatus status, int epicId, int id) {
+        super(name, description, status, id);
+        this.epicId = epicId;
     }
 
-    public String getEpicName() {
-        return epicName;
+    public int getEpicId() {
+        return epicId;
     }
 
-    public void setEpicName(String epicName) {
-        this.epicName = epicName;
-    }
-
-    public int getID() {
-        return ID;
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     @Override
     public String toString() {
         return "taskmanagement.Subtask{" +
-                "epicName='" + epicName + '\'' +
-                ", subtaskID=" + ID +
+                "epicID='" + epicId + '\'' +
+                ", subtaskID=" + getId() +
                 ", subtaskName='" + getName() + '\'' +
                 ", subtaskDescription='" + getDescription() + '\'' +
                 ", subtaskStatus=" + getStatus() +
