@@ -6,7 +6,7 @@ public class Task {
     private String name;
     private String description;
     private TaskStatus status;
-    private int ID;
+    private int id;
 
     public Task(String name, String description) {
         this.name = name;
@@ -19,35 +19,27 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, TaskStatus status, int ID) {
+    public Task(String name, String description, TaskStatus status, int id) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.ID = ID;
+        this.id = id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public TaskStatus getStatus() {
@@ -63,12 +55,12 @@ public class Task {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Task task = (Task) object;
-        return Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, status);
+        return Objects.hash(name, description, status, id);
     }
 
     @Override
@@ -77,7 +69,7 @@ public class Task {
                 "taskName='" + name + '\'' +
                 ", taskDescription='" + description + '\'' +
                 ", taskStatus=" + status +
-                ", taskID=" + ID +
+                ", taskID=" + id +
                 '}';
     }
 }
