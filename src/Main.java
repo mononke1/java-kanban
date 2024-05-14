@@ -70,7 +70,6 @@ public class Main {
         manager.getEpicByID(3);
 
         manager.removeEpicByID(3);
-
         System.out.println(manager.getHistory());
         
     }
