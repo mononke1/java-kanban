@@ -1,5 +1,6 @@
 package service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import taskmanagement.Task;
 import taskmanagement.TaskStatus;
@@ -10,12 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
+    private HistoryManager historyManager;
+    private Task task;
 
+    @BeforeEach
+    void setUp() {
+        historyManager = new InMemoryHistoryManager();
+        task = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 1);
+    }
 
     @Test
     void add() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 1);
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history);
@@ -24,8 +30,6 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void addTwoIdenticalTasks() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 1);
         historyManager.add(task);
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
@@ -35,8 +39,6 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void getHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 1);
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
         assertEquals(history, historyManager.getHistory());
@@ -44,10 +46,8 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void deleteTaskFromTheHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task1 = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 1);
         Task task2 = new Task("taskTest", "testTasksEqualityById", TaskStatus.NEW, 2);
-        historyManager.add(task1);
+        historyManager.add(task);
         historyManager.add(task2);
         final List<Task> history1 = historyManager.getHistory();
         assertEquals(2, history1.size());
