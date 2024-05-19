@@ -175,17 +175,32 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearTask() {
+        for (int id : tasks.keySet()) {
+            historyManager.remove(id);
+        }
         tasks.clear();
     }
 
     @Override
     public void clearEpic() {
+        for (int id : epics.keySet()) {
+            historyManager.remove(id);
+        }
+
+        for (int id : subtasks.keySet()) {
+            historyManager.remove(id);
+        }
+
         epics.clear();
         subtasks.clear();
     }
 
     @Override
     public void clearSubtask() {
+        for (int id : subtasks.keySet()) {
+            historyManager.remove(id);
+        }
+
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.getSubtasks().clear();
@@ -219,11 +234,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTaskByID(int id) {
+        historyManager.remove(id);
         tasks.remove(id);
     }
 
     @Override
     public void removeSubtaskByID(int id) {
+        historyManager.remove(id);
         for (Epic epic : epics.values()) {
             if (epic.getSubtasks().contains(subtasks.get(id))) {
                 epic.getSubtasks().remove(subtasks.get(id));
@@ -234,8 +251,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeEpicByID(int id) {
+        historyManager.remove(id);
         for (Subtask subtask : epics.get(id).getSubtasks()) {
             if (subtasks.containsValue(subtask)) {
+                historyManager.remove(subtask.getId());
                 subtasks.remove(subtask.getId());
             }
         }
@@ -250,7 +269,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
-        // извините, не совсем понял в чем ошибка. historyManager это объект InMemoryHistoryManager, затем вызывается соответствующий метод, вроде все так, как вы написали
     }
 
     private void addSubtask2(Subtask subtask) {

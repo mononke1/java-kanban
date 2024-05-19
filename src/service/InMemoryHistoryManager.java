@@ -2,31 +2,36 @@ package service;
 
 import taskmanagement.Task;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final LinkedList<Task> history;
-    private static final int HISTORY_SIZE_LIMIT = 10;
 
-    public InMemoryHistoryManager() {
-        history = new LinkedList<>();
-    }
+    private final HashMap<Integer, Node<Task>> history = new HashMap<>();
+    private final HandMadeLinkedList<Task> historyLinkedList = new HandMadeLinkedList<>();
 
     @Override
     public List<Task> getHistory() {
-        return new ArrayList<>(history);
+        return historyLinkedList.getTasks();
     }
-
 
     @Override
     public void add(Task task) {
-        if (history.size() < HISTORY_SIZE_LIMIT) {
-            history.addLast(task);
-        } else {
-            history.removeFirst();
-            history.addLast(task);
+        if (task == null) {
+            return;
         }
+        remove(task.getId());
+        historyLinkedList.linkLast(task);
+        history.put(task.getId(), historyLinkedList.getTail());
+    }
+
+    @Override
+    public void remove(int id) {
+        final Node<Task> node = history.remove(id);
+        if (node == null) {
+            return;
+        }
+        historyLinkedList.removeNode(node);
     }
 }
+
