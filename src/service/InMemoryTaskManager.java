@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HashMap<Integer, Task> tasks;
-    private final HashMap<Integer, Epic> epics;
-    private final HashMap<Integer, Subtask> subtasks;
-    private final HistoryManager historyManager;
-    private static int ID = 1;
+    protected final HashMap<Integer, Task> tasks;
+    protected final HashMap<Integer, Epic> epics;
+    protected final HashMap<Integer, Subtask> subtasks;
+    protected final HistoryManager historyManager;
+    protected static int ID = 1;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -51,10 +51,12 @@ public class InMemoryTaskManager implements TaskManager {
             subtask.setId(id);
             subtasks.put(id, subtask);
             epics.get(subtask.getEpicId()).addSubtaskInEpic(subtask);
+            redefineStatus(epics.get(subtask.getEpicId()));
         } else {
             if (isValidID(subtask)) {
                 subtasks.put(subtask.getId(), subtask);
                 epics.get(subtask.getEpicId()).addSubtaskInEpic(subtask);
+                redefineStatus(epics.get(subtask.getEpicId()));
             }
         }
     }
@@ -95,7 +97,6 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask subtask : subtasks.values()) {
             if (subtask.getId() == newSubtask.getId()) {
                 subtasks.put(newSubtask.getId(), newSubtask);
-                System.out.println("qweqweqwe");
                 redefineEpic(newSubtask, subtask);
             }
         }
