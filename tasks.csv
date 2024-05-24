@@ -1,1 +1,7 @@
-
+id,type,name,status,description,epic
+1,TASK,task11111,NEW,test,
+2,TASK,task22222,IN_PROGRESS,test2,
+3,EPIC,epic1,IN_PROGRESS,test,
+4,SUBTASK,111111,NEW,test,3
+5,SUBTASK,su324234btask1,DONE,test,3
+6,SUBTASK,subt234234ask1,IN_PROGRESS,test,3

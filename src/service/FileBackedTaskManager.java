@@ -35,18 +35,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileWriter.write(line);
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("исключение при записи в файл");
+            throw new ManagerSaveException("исключение при записи в файл: " + file.getName(), e);
         }
     }
 
     private String toString(Task task) {
-        String line = task.getId() + "," + task.getType() + "," + task.getName() + "," +
-                task.getStatus() + "," + task.getDescription() + ",";
+        StringBuilder line = new StringBuilder();
+        line.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName())
+                .append(",").append(task.getStatus()).append(",").append(task.getDescription()).append(",");
         if (task instanceof Subtask) {
-            line += ((Subtask) task).getEpicId();
+            line.append(((Subtask) task).getEpicId());
         }
-        line += "\n";
-        return line;
+        line.append("\n");
+        return line.toString();
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
@@ -79,7 +80,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             ID = maxId + 1;
         } catch (IOException e) {
-            throw new ManagerSaveException("исключение при чтении файла");
+            throw new ManagerSaveException("исключение при чтении файла: " + file.getName(), e);
         }
         return fileBackedTaskManager;
     }

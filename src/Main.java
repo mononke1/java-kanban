@@ -10,12 +10,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Task task1 = new Task("task1", "test", TaskStatus.NEW);
-        Task task2 = new Task("task2", "test2", TaskStatus.IN_PROGRESS);
+        Task task1 = new Task("task11111", "test", TaskStatus.NEW);
+        Task task2 = new Task("task22222", "test2", TaskStatus.IN_PROGRESS);
 
-        Subtask subtask1 = new Subtask("subtask1", "test", TaskStatus.NEW);
-        Subtask subtask2 = new Subtask("subtask1", "test", TaskStatus.DONE);
-        Subtask subtask3 = new Subtask("subtask1", "test", TaskStatus.IN_PROGRESS, 3);
+        Subtask subtask1 = new Subtask("111111", "test", TaskStatus.NEW);
+        Subtask subtask2 = new Subtask("su324234btask1", "test", TaskStatus.DONE);
+        Subtask subtask3 = new Subtask("subt234234ask1", "test", TaskStatus.IN_PROGRESS, 3);
         ArrayList<Subtask> subtasks = new ArrayList<>();
         subtasks.add(subtask1);
         subtasks.add(subtask2);
