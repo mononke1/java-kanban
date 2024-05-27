@@ -1,5 +1,7 @@
 package taskmanagement;
 
+import service.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -7,16 +9,23 @@ public class Task {
     private String description;
     private TaskStatus status;
     private int id;
+    private TaskType type;
+
+    public TaskType getType() {
+        return type;
+    }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+        this.type = TaskType.TASK;
     }
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = TaskType.TASK;
     }
 
     public Task(String name, String description, TaskStatus status, int id) {
@@ -24,6 +33,7 @@ public class Task {
         this.description = description;
         this.status = status;
         this.id = id;
+        this.type = TaskType.TASK;
     }
 
     public void setId(int id) {

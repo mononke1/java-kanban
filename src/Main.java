@@ -1,76 +1,43 @@
+import service.FileBackedTaskManager;
 import service.Managers;
 import service.TaskManager;
 import taskmanagement.*;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager manager = Managers.getDefault();
 
-        Task task1 = new Task("task1", "task", TaskStatus.NEW);
-        Task task2 = new Task("task1", "task", TaskStatus.NEW);
+        Task task1 = new Task("task11111", "test", TaskStatus.NEW);
+        Task task2 = new Task("task22222", "test2", TaskStatus.IN_PROGRESS);
 
-        manager.addTask(task1);
-        manager.addTask(task2);
-        System.out.println("\n" + "1");
-        System.out.println(manager.getTask());
-
-        Task task1Update = new Task("task1", "task", TaskStatus.IN_PROGRESS, 1);
-        manager.updateTask(task1Update);
-        System.out.println(manager.getTask());
-        System.out.println("\n" + "2");
-        System.out.println(manager.getTaskByID(1));
-
-        Epic epic = new Epic("epic1", "epic");
-        manager.addEpic(epic);
-        System.out.println("\n" + "3");
-        System.out.println(manager.getEpic());
-
-        Subtask subtask = new Subtask("subtask", "test", TaskStatus.NEW, 3);
-        manager.addSubtask(subtask);
-        System.out.println("\n" + "4");
-        System.out.println(manager.getEpic());
-        System.out.println(manager.getSubtask());
-
-        Subtask subtaskUpdate = new Subtask("subtask", "test", TaskStatus.IN_PROGRESS, 3, 4);
-        manager.updateSubtask(subtaskUpdate);
-
-        System.out.println("\n" + "5");
-        System.out.println(manager.getEpic());
-        System.out.println(manager.getSubtask());
-
-        Subtask subtask1 = new Subtask("name", "qweqwe", TaskStatus.DONE, 3);
-        Subtask subtask2 = new Subtask("name", "qweqwe", TaskStatus.DONE, 3);
+        Subtask subtask1 = new Subtask("111111", "test", TaskStatus.NEW);
+        Subtask subtask2 = new Subtask("su324234btask1", "test", TaskStatus.DONE);
+        Subtask subtask3 = new Subtask("subt234234ask1", "test", TaskStatus.IN_PROGRESS, 3);
         ArrayList<Subtask> subtasks = new ArrayList<>();
         subtasks.add(subtask1);
         subtasks.add(subtask2);
+        Epic epic = new Epic("epic1", "test", subtasks);
 
-        System.out.println("\n" + "6");
+        TaskManager manager = Managers.getDefault();
+
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addEpic(epic);
+        manager.addSubtask(subtask3);
+
+        System.out.println(manager.getTask());
         System.out.println(manager.getEpic());
         System.out.println(manager.getSubtask());
+/*
+        FileBackedTaskManager manager2 = FileBackedTaskManager.loadFromFile(new File("tasks.csv"));
+        System.out.println(manager2.getTask());
+        System.out.println(manager2.getEpic());
+        System.out.println(manager2.getSubtask());
+        Task task3 = new Task("task1", "test", TaskStatus.IN_PROGRESS);
 
-        Task task = new Task("name", "sdfsdf", TaskStatus.DONE, 14);
-        manager.addTask(task);
-        System.out.println("\n" + "7");
-        System.out.println(manager.getTask());
-
-        manager.getEpicByID(3);
-        manager.getTaskByID(1);
-        manager.getTaskByID(2);
-        manager.getTaskByID(14);
-        manager.getSubtaskByID(4);
-        manager.getEpicByID(3);
-        manager.getTaskByID(1);
-        manager.getTaskByID(2);
-        manager.getTaskByID(14);
-        manager.getSubtaskByID(4);
-        manager.getTaskByID(1);
-        manager.getEpicByID(3);
-
-        manager.removeEpicByID(3);
-
-        System.out.println(manager.getHistory());
+        manager2.addTask(task3);*/
     }
 }
