@@ -34,4 +34,3 @@ public class InMemoryHistoryManager implements HistoryManager {
         historyLinkedList.removeNode(node);
     }
 }
-
