@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -46,25 +45,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
         StringBuilder line = new StringBuilder();
-        line.append(task.getId()).append(",")
-                .append(task.getType())
-                .append(",")
-                .append(task.getName())
-                .append(",")
-                .append(task.getStatus())
-                .append(",")
-                .append(task.getDescription());
+        line.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName()).append(",").append(task.getStatus()).append(",").append(task.getDescription());
         if (task instanceof Subtask) {
-            line.append(",")
-                    .append(((Subtask) task).getEpicId());
+            line.append(",").append(((Subtask) task).getEpicId());
         }
 
         if (task.getStartTime().isPresent()) {
             String startTime = task.getStartTime().get().format(FORMATTER);
             String endTime = task.getEndTime().format(FORMATTER);
-            line.append(",").append(startTime)
-                    .append(",")
-                    .append(endTime);
+            line.append(",").append(startTime).append(",").append(endTime);
         }
 
         line.append("\n");
@@ -85,7 +74,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 switch (task.getType()) {
                     case TASK:
-                        fileBackedTaskManager.tasks.put(task.getId(),task);
+                        fileBackedTaskManager.tasks.put(task.getId(), task);
                     case EPIC:
                         if (task instanceof Epic) {
                             fileBackedTaskManager.epics.put(task.getId(), (Epic) task);

@@ -65,12 +65,7 @@ public class Epic extends Task {
     }
 
     private void setStartTime() {
-        startTime = subtasks.stream()
-                .map(Subtask::getStartTime)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .min(Comparator.naturalOrder())
-                .orElse(null);
+        startTime = subtasks.stream().map(Subtask::getStartTime).filter(Optional::isPresent).map(Optional::get).min(Comparator.naturalOrder()).orElse(null);
     }
 
     public Optional<LocalDateTime> getStartTime() {
@@ -78,18 +73,11 @@ public class Epic extends Task {
     }
 
     private void setDuration() {
-        duration = subtasks.stream()
-                .filter(subtask -> subtask.getStartTime().isPresent())
-                .map(Subtask::getDuration)
-                .reduce(Duration.ZERO, Duration::plus);
+        duration = subtasks.stream().filter(subtask -> subtask.getStartTime().isPresent()).map(Subtask::getDuration).reduce(Duration.ZERO, Duration::plus);
     }
 
     public LocalDateTime getEndTime() {
-        return subtasks.stream()
-                .filter(subtask -> subtask.getStartTime().isPresent())
-                .max(Comparator.comparing(Subtask::getEndTime))
-                .map(Subtask::getEndTime)
-                .orElse(null);
+        return subtasks.stream().filter(subtask -> subtask.getStartTime().isPresent()).max(Comparator.comparing(Subtask::getEndTime)).map(Subtask::getEndTime).orElse(null);
     }
 
     @Override
@@ -99,14 +87,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "subtasks=" + subtasks +
-                ", epicID=" + getId() +
-                ", epicName='" + getName() + '\'' +
-                ", epicDescription='" + getDescription() + '\'' +
-                ", epicStatus=" + getStatus() +
-                ", duration=" + duration +
-                ", startTime=" + startTime +
-                '}';
+        return "Epic{" + "subtasks=" + subtasks + ", epicID=" + getId() + ", epicName='" + getName() + '\'' + ", epicDescription='" + getDescription() + '\'' + ", epicStatus=" + getStatus() + ", duration=" + duration + ", startTime=" + startTime + '}';
     }
 }

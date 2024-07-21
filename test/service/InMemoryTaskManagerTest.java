@@ -1,6 +1,5 @@
 package service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import taskmanagement.Epic;
@@ -10,11 +9,10 @@ import taskmanagement.TaskStatus;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest {
 
@@ -38,7 +36,7 @@ class InMemoryTaskManagerTest {
         Task task1 = new Task("task1", "test1", TaskStatus.NEW, duration, time1);
         Task task2 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
         taskManager.addTask(task1);
-        assertDoesNotThrow( () -> {
+        assertDoesNotThrow(() -> {
             taskManager.addTask(task2);
         });
         taskManager = new InMemoryTaskManager();
@@ -46,7 +44,7 @@ class InMemoryTaskManagerTest {
         Task task5 = new Task("task1", "test1", TaskStatus.NEW, duration, time1);
         Task task6 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
         taskManager.addTask(task5);
-        assertDoesNotThrow( () -> {
+        assertDoesNotThrow(() -> {
             taskManager.addTask(task6);
         });
         taskManager = new InMemoryTaskManager();
@@ -108,7 +106,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void  shouldSetStatusToInProgressWhenAtLeastOneSubtaskIsInProgress() {
+    void shouldSetStatusToInProgressWhenAtLeastOneSubtaskIsInProgress() {
         Subtask subtask1 = new Subtask("subtaskTest1", "test1", TaskStatus.IN_PROGRESS);
         Subtask subtask2 = new Subtask("subtaskTest2", "test2", TaskStatus.IN_PROGRESS);
         Subtask subtask3 = new Subtask("subtaskTest3", "test3", TaskStatus.IN_PROGRESS);
@@ -351,7 +349,7 @@ class InMemoryTaskManagerTest {
         taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
         int id = taskManager.getId(epic2);
-        assertEquals(epic2,taskManager.getEpicByID(id));
+        assertEquals(epic2, taskManager.getEpicByID(id));
     }
 
     @Test

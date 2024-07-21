@@ -18,10 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics = new HashMap<>();
         subtasks = new HashMap<>();
         historyManager = Managers.getDefaultHistory();
-        prioritizedTasks = new TreeSet<>(Comparator.comparing(
-                task -> task.getStartTime()
-                        .orElseThrow(() -> new IllegalArgumentException("Не установлено время StartTime"))
-        ));
+        prioritizedTasks = new TreeSet<>(Comparator.comparing(task -> task.getStartTime().orElseThrow(() -> new IllegalArgumentException("Не установлено время StartTime"))));
     }
 
     private int getID() {
@@ -64,10 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isValidID(Task task) {
-        return task.getId() > 0 &&
-                !tasks.containsKey(task.getId()) &&
-                !epics.containsKey(task.getId()) &&
-                !subtasks.containsKey(task.getId());
+        return task.getId() > 0 && !tasks.containsKey(task.getId()) && !epics.containsKey(task.getId()) && !subtasks.containsKey(task.getId());
     }
 
     @Override
@@ -311,10 +305,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         prioritizedTasks.remove(subtasks.get(id));
         Subtask subtaskToRemove = subtasks.get(id);
-        epics.values().stream()
-                .filter(epic -> epic.getSubtasks().contains(subtaskToRemove))
-                .findFirst()
-                .ifPresent(epic -> epic.getSubtasks().remove(subtaskToRemove));
+        epics.values().stream().filter(epic -> epic.getSubtasks().contains(subtaskToRemove)).findFirst().ifPresent(epic -> epic.getSubtasks().remove(subtaskToRemove));
         subtasks.remove(id);
     }
 
@@ -322,13 +313,11 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicByID(int id) {
         historyManager.remove(id);
 
-        epics.get(id).getSubtasks().stream()
-                .filter(subtasks::containsValue)
-                .forEach(subtask -> {
-                    prioritizedTasks.remove(subtask);
-                    historyManager.remove(subtask.getId());
-                    subtasks.remove(subtask.getId());
-                });
+        epics.get(id).getSubtasks().stream().filter(subtasks::containsValue).forEach(subtask -> {
+            prioritizedTasks.remove(subtask);
+            historyManager.remove(subtask.getId());
+            subtasks.remove(subtask.getId());
+        });
 
         epics.remove(id);
     }
@@ -349,8 +338,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean checkPrioritizedTasks(LocalDateTime startTime) {
-        return prioritizedTasks.stream()
-                .anyMatch(task -> task.getEndTime().isAfter(startTime));
+        return prioritizedTasks.stream().anyMatch(task -> task.getEndTime().isAfter(startTime));
     }
 
     private void addSubtask2(Subtask subtask) {
