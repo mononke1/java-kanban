@@ -188,9 +188,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void redefineStatus(Epic epic) {
-        boolean status_NEW = false;
-        boolean status_IN_PROGRESS = false;
-        boolean status_DONE = false;
+        boolean statusNew = false;
+        boolean statusInProgress = false;
+        boolean statusDone = false;
 
         if (epic.getSubtasks().isEmpty() || epic.getSubtasks() == null) {
             epic.setStatus(TaskStatus.NEW);
@@ -199,17 +199,17 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (Subtask subtask : epic.getSubtasks()) {
             if (subtask.getStatus() == TaskStatus.NEW) {
-                status_NEW = true;
+                statusNew = true;
             } else if (subtask.getStatus() == TaskStatus.IN_PROGRESS) {
-                status_IN_PROGRESS = true;
+                statusInProgress = true;
             } else if (subtask.getStatus() == TaskStatus.DONE) {
-                status_DONE = true;
+                statusDone = true;
             }
         }
 
-        if (status_NEW && !status_IN_PROGRESS && !status_DONE) {
+        if (statusNew && !statusInProgress && !statusDone) {
             epic.setStatus(TaskStatus.NEW);
-        } else if (status_DONE && !status_NEW && !status_IN_PROGRESS) {
+        } else if (statusDone && !statusNew && !statusInProgress) {
             epic.setStatus(TaskStatus.DONE);
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
