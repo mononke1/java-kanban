@@ -32,6 +32,10 @@ class InMemoryTaskManagerTest {
     void shouldCorrectlyCalculateIntervalOverlap() {
         LocalDateTime time1 = LocalDateTime.of(2024, 10, 10, 8, 0);
         LocalDateTime time2 = LocalDateTime.of(2024, 10, 10, 9, 0);
+        LocalDateTime time3 = LocalDateTime.of(2024, 10, 10, 10, 0);
+        LocalDateTime time4 = LocalDateTime.of(2024, 10, 10, 11, 0);
+        LocalDateTime time5 = LocalDateTime.of(2024, 10, 10, 12, 0);
+        LocalDateTime time6 = LocalDateTime.of(2024, 10, 10, 13, 0);
         Duration duration = Duration.ofMinutes(30);
         Task task1 = new Task("task1", "test1", TaskStatus.NEW, duration, time1);
         Task task2 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
@@ -39,21 +43,19 @@ class InMemoryTaskManagerTest {
         assertDoesNotThrow(() -> {
             taskManager.addTask(task2);
         });
-        taskManager = new InMemoryTaskManager();
         duration = Duration.ofMinutes(60);
-        Task task5 = new Task("task1", "test1", TaskStatus.NEW, duration, time1);
-        Task task6 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
-        taskManager.addTask(task5);
-        assertDoesNotThrow(() -> {
-            taskManager.addTask(task6);
-        });
-        taskManager = new InMemoryTaskManager();
-        duration = Duration.ofMinutes(61);
-        Task task3 = new Task("task1", "test1", TaskStatus.NEW, duration, time1);
-        Task task4 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
+        Task task3 = new Task("task1", "test1", TaskStatus.NEW, duration, time3);
+        Task task4 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time4);
         taskManager.addTask(task3);
         assertThrows(TaskOverlapException.class, () -> {
             taskManager.addTask(task4);
+        });
+        duration = Duration.ofMinutes(61);
+        Task task5 = new Task("task1", "test1", TaskStatus.NEW, duration, time5);
+        Task task6 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time6);
+        taskManager.addTask(task5);
+        assertThrows(TaskOverlapException.class, () -> {
+            taskManager.addTask(task6);
         });
     }
 
