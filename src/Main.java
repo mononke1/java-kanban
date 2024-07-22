@@ -1,3 +1,4 @@
+import service.FileBackedTaskManager;
 import service.Managers;
 import service.TaskManager;
 import taskmanagement.Epic;
@@ -5,6 +6,7 @@ import taskmanagement.Subtask;
 import taskmanagement.Task;
 import taskmanagement.TaskStatus;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,5 +64,16 @@ public class Main {
         System.out.println(managers.getSubtask());
         System.out.println(managers.getEpic());
         System.out.println(managers.getPrioritizedTasks());
+
+        /*
+        File file = new File("tasks.csv");
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+
+        System.out.println(fileBackedTaskManager.getTask());
+        System.out.println(fileBackedTaskManager.getSubtask());
+        System.out.println(fileBackedTaskManager.getEpic());
+        System.out.println(fileBackedTaskManager.getPrioritizedTasks());
+        */
+
     }
 }

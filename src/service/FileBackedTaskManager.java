@@ -50,9 +50,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             line.append(",").append(((Subtask) task).getEpicId());
         }
 
-        if (task.getStartTime().isPresent()) {
+        if (task.getStartTime().isPresent() && task.getEndTime().isPresent()) {
             String startTime = task.getStartTime().get().format(FORMATTER);
-            String endTime = task.getEndTime().format(FORMATTER);
+            String endTime = task.getEndTime().get().format(FORMATTER);
             line.append(",").append(startTime).append(",").append(endTime);
         }
 
@@ -75,6 +75,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 switch (task.getType()) {
                     case TASK:
                         fileBackedTaskManager.tasks.put(task.getId(), task);
+                        if (!fileBackedTaskManager.hasTaskOverlap(task)) {
+                            fileBackedTaskManager.prioritizedTasks.add(task);
+                        }
                     case EPIC:
                         if (task instanceof Epic) {
                             fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
@@ -84,6 +87,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         if (task instanceof Subtask) {
                             fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
                             fileBackedTaskManager.epics.get(((Subtask) task).getEpicId()).getSubtasks().add((Subtask) task);
+                            if (!fileBackedTaskManager.hasTaskOverlap(task)) {
+                                fileBackedTaskManager.prioritizedTasks.add(task);
+                            }
                         }
                         break;
                 }
