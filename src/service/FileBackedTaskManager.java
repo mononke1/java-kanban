@@ -6,11 +6,15 @@ import taskmanagement.Task;
 import taskmanagement.TaskStatus;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    private static final String FIRST_LINE = String.format("%s,%s,%s,%s,%s,%s\n", "id", "type", "name", "status", "description", "epic");
+    private static final String FIRST_LINE = String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", "id", "type", "name", "status", "description", "epic", "startTime", "endTime");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -41,11 +45,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
         StringBuilder line = new StringBuilder();
-        line.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName())
-                .append(",").append(task.getStatus()).append(",").append(task.getDescription()).append(",");
+        line.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName()).append(",").append(task.getStatus()).append(",").append(task.getDescription());
         if (task instanceof Subtask) {
-            line.append(((Subtask) task).getEpicId());
+            line.append(",").append(((Subtask) task).getEpicId());
         }
+
+        if (task.getStartTime().isPresent() && task.getEndTime().isPresent()) {
+            String startTime = task.getStartTime().get().format(FORMATTER);
+            String endTime = task.getEndTime().get().format(FORMATTER);
+            line.append(",").append(startTime).append(",").append(endTime);
+        }
+
         line.append("\n");
         return line.toString();
     }
@@ -64,7 +74,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 switch (task.getType()) {
                     case TASK:
-                        fileBackedTaskManager.tasks.put(task.getId(),task);
+                        fileBackedTaskManager.tasks.put(task.getId(), task);
+                        if (!fileBackedTaskManager.hasTaskOverlap(task)) {
+                            fileBackedTaskManager.prioritizedTasks.add(task);
+                        }
                     case EPIC:
                         if (task instanceof Epic) {
                             fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
@@ -74,6 +87,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         if (task instanceof Subtask) {
                             fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
                             fileBackedTaskManager.epics.get(((Subtask) task).getEpicId()).getSubtasks().add((Subtask) task);
+                            if (!fileBackedTaskManager.hasTaskOverlap(task)) {
+                                fileBackedTaskManager.prioritizedTasks.add(task);
+                            }
                         }
                         break;
                 }
@@ -100,7 +116,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return epic;
             case SUBTASK:
                 epicId = Integer.parseInt(values[5]);
+                if (values.length > 6) {
+                    LocalDateTime startTime = LocalDateTime.parse(values[6], FORMATTER);
+                    LocalDateTime endTime = LocalDateTime.parse(values[7], FORMATTER);
+                    Duration duration = Duration.between(startTime, endTime);
+                    return new Subtask(taskName, taskDescription, taskStatus, epicId, taskId, duration, startTime);
+                }
                 return new Subtask(taskName, taskDescription, taskStatus, epicId, taskId);
+        }
+        if (values.length > 6) {
+            LocalDateTime startTime = LocalDateTime.parse(values[5], FORMATTER);
+            LocalDateTime endTime = LocalDateTime.parse(values[6], FORMATTER);
+            Duration duration = Duration.between(startTime, endTime);
+            return new Task(taskName, taskDescription, taskStatus, duration, startTime, taskId);
         }
         return new Task(taskName, taskDescription, taskStatus, taskId);
     }

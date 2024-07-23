@@ -2,13 +2,13 @@ package service;
 
 import java.util.ArrayList;
 
-public class HandMadeLinkedList<Task> {
-    private Node<Task> head;
-    private Node<Task> tail;
+public class HandMadeLinkedList<T> {
+    private Node<T> head;
+    private Node<T> tail;
 
-    public void linkLast(Task element) {
-        final Node<Task> oldTail = tail;
-        final Node<Task> newNode = new Node<>(oldTail, element, null);
+    public void linkLast(T element) {
+        final Node<T> oldTail = tail;
+        final Node<T> newNode = new Node<>(oldTail, element, null);
         tail = newNode;
         if (oldTail == null) {
             head = newNode;
@@ -17,12 +17,12 @@ public class HandMadeLinkedList<Task> {
         }
     }
 
-    public void removeNode(Node<Task> node) {
+    public void removeNode(Node<T> node) {
         if (node == null) {
             return;
         }
-        final Node<Task> prev = node.getPrev();
-        final Node<Task> next = node.getNext();
+        final Node<T> prev = node.getPrev();
+        final Node<T> next = node.getNext();
 
         if (prev != null) {
             prev.setNext(next);
@@ -39,9 +39,9 @@ public class HandMadeLinkedList<Task> {
         node.setData(null);
     }
 
-    public ArrayList<Task> getTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
-        Node<Task> current = head;
+    public ArrayList<T> getTasks() {
+        ArrayList<T> tasks = new ArrayList<>();
+        Node<T> current = head;
         while (current != null) {
             tasks.add(current.getData());
             current = current.getNext();
@@ -49,7 +49,7 @@ public class HandMadeLinkedList<Task> {
         return tasks;
     }
 
-    public Node<Task> getTail() {
+    public Node<T> getTail() {
         return tail;
     }
 }

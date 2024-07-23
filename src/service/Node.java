@@ -1,37 +1,37 @@
 package service;
 
-public class Node <Task> {
-    private Task data;
-    private Node<Task> next;
-    private Node<Task> prev;
+public class Node<T> {
+    private T data;
+    private Node<T> next;
+    private Node<T> prev;
 
-    public Node(Node<Task> prev, Task data, Node<Task> next) {
+    public Node(Node<T> prev, T data, Node<T> next) {
         this.data = data;
         this.next = next;
         this.prev = prev;
     }
 
-    public Task getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Task data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public Node<Task> getNext() {
+    public Node<T> getNext() {
         return next;
     }
 
-    public void setNext(Node<Task> next) {
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 
-    public Node<Task> getPrev() {
+    public Node<T> getPrev() {
         return prev;
     }
 
-    public void setPrev(Node<Task> prev) {
+    public void setPrev(Node<T> prev) {
         this.prev = prev;
     }
 }
