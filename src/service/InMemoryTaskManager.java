@@ -103,8 +103,8 @@ public class InMemoryTaskManager implements TaskManager {
             throw new TaskNotFoundException("задача с данным id не найдена");
         }
         Task task = tasks.get(newTask.getId());
-       if (prioritizedTasks.remove(task)) {
-           addTaskToPrioritizedTasks(newTask);
+        if (prioritizedTasks.remove(task)) {
+            addTaskToPrioritizedTasks(newTask);
         }
         tasks.put(newTask.getId(), newTask);
     }
@@ -327,12 +327,11 @@ public class InMemoryTaskManager implements TaskManager {
 
         epics.values().stream()
                 .filter(epic -> epic.getSubtasks().contains(subtaskToRemove))
-                .findFirst()
-                .ifPresent(epic -> {
-                    epic.getSubtasks().remove(subtaskToRemove);
-                    updateEpicTimes(epic);
-                    redefineStatus(epic);
-                });
+                .findFirst().ifPresent(epic -> {
+            epic.getSubtasks().remove(subtaskToRemove);
+            updateEpicTimes(epic);
+            redefineStatus(epic);
+        });
 
         subtasks.remove(id);
     }

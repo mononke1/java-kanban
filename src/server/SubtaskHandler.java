@@ -67,7 +67,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
 
     private void handleGetSubtask(HttpExchange exchange) throws IOException {
         String responseString = gson.toJson(manager.getSubtask());
-        writeResponse(exchange, responseString,  200);
+        writeResponse(exchange, responseString, 200);
     }
 
     private void handlePostSubtask(HttpExchange exchange) throws IOException {

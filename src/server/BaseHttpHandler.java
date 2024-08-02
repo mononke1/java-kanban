@@ -21,7 +21,7 @@ public class BaseHttpHandler {
 
         JsonElement jsonElement = JsonParser.parseString(body);
 
-        if(!jsonElement.isJsonObject()) {
+        if (!jsonElement.isJsonObject()) {
             writeResponse(exchange, "Invalid JSON format", 400);
         }
         return jsonElement.getAsJsonObject();

@@ -76,13 +76,13 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
     private void handleGetEpics(HttpExchange exchange) throws IOException {
         String responseString = gson.toJson(manager.getEpic());
-        writeResponse(exchange, responseString,  200);
+        writeResponse(exchange, responseString, 200);
     }
 
     private void handleGetEpicSubtasks(HttpExchange exchange, String[] pathParts) throws IOException {
         int id = Integer.parseInt(pathParts[2]);
         String responseString = gson.toJson(manager.getEpicSubtasks(id));
-        writeResponse(exchange, responseString,  200);
+        writeResponse(exchange, responseString, 200);
     }
 
     private void handlePostEpic(HttpExchange exchange) throws IOException {
@@ -133,14 +133,14 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 
-    private Epic createEpicObject(HttpExchange exchange,JsonObject jsonObject) throws IOException {
+    private Epic createEpicObject(HttpExchange exchange, JsonObject jsonObject) throws IOException {
         String name = jsonObject.get("name").getAsString();
         String description = jsonObject.get("description").getAsString();
         ArrayList<Subtask> subtasks = new ArrayList<>();
 
         if (jsonObject.has("subtasks")) {
             JsonElement jsonElement = jsonObject.get("subtasks");
-            if(!jsonElement.isJsonArray()) {
+            if (!jsonElement.isJsonArray()) {
                 writeResponse(exchange, "Invalid JSON format", 400);
             }
             JsonArray jsonArray = jsonElement.getAsJsonArray();

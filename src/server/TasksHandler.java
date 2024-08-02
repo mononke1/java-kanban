@@ -68,7 +68,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
 
     private void handleGetTasks(HttpExchange exchange) throws IOException {
         String responseString = gson.toJson(manager.getTask());
-        writeResponse(exchange, responseString,  200);
+        writeResponse(exchange, responseString, 200);
     }
 
     private void handlePostTask(HttpExchange exchange) throws IOException {
