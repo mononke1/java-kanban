@@ -1,6 +1,3 @@
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import server.HttpTaskServer;
 import service.Managers;
 import service.TaskManager;
 import taskmanagement.Epic;
@@ -16,12 +13,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-       /* LocalDateTime time = LocalDateTime.of(2024, 10, 10, 8, 0);
+        LocalDateTime time = LocalDateTime.of(2024, 10, 10, 8, 0);
         LocalDateTime time2 = LocalDateTime.of(2024, 10, 10, 9, 0);
         LocalDateTime time3 = LocalDateTime.of(2024, 10, 10, 10, 0);
         LocalDateTime time4 = LocalDateTime.of(2024, 10, 10, 11, 0);
         LocalDateTime time5 = LocalDateTime.of(2024, 10, 10, 12, 0);
-        LocalDateTime time6 = LocalDateTime.of(2024, 10, 10, 13, 0);
         Duration duration = Duration.ofMinutes(30);
         Task task1 = new Task("task1", "test1", TaskStatus.NEW, duration, time);
         Task task2 = new Task("task2", "test2", TaskStatus.IN_PROGRESS, duration, time2);
@@ -66,23 +62,6 @@ public class Main {
         System.out.println(managers.getSubtask());
         System.out.println(managers.getEpic());
         System.out.println(managers.getPrioritizedTasks());
-        System.out.println(managers.getEpicSubtasks(3));*/
-       /* Subtask subtask = new Subtask("sssss", "sdfsdfsdf", TaskStatus.NEW, duration, time6);
-        Subtask subtaskw = new Subtask("sssss", "sdfsdfsdf", TaskStatus.NEW, duration, time);
-        ArrayList<Subtask> subtasks1 = new ArrayList<>();
-        subtasks1.add(subtask);
-        subtasks1.add(subtaskw);
-        Epic epic1 = new Epic("epic", "sdfsdfsdf", subtasks1);
-        managers.addEpic(epic1);
-        System.out.println(managers.getEpic());*/
-        /*
-        File file = new File("tasks.csv");
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
-
-        System.out.println(fileBackedTaskManager.getTask());
-        System.out.println(fileBackedTaskManager.getSubtask());
-        System.out.println(fileBackedTaskManager.getEpic());
-        System.out.println(fileBackedTaskManager.getPrioritizedTasks());
-        */
+        System.out.println(managers.getEpicSubtasks(3));
     }
 }
