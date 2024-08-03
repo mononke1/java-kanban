@@ -99,13 +99,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task newTask) throws TaskOverlapException, TaskNotFoundException {
-        if (!tasks.containsKey(newTask.getId())) {
-            throw new TaskNotFoundException("задача с данным id не найдена");
-        }
-        Task task = tasks.get(newTask.getId());
+        Task task = Optional.ofNullable(tasks.get(newTask.getId()))
+                .orElseThrow(() -> new TaskNotFoundException("задача с данным id не найдена"));
+
         if (prioritizedTasks.remove(task)) {
             addTaskToPrioritizedTasks(newTask);
         }
+
         tasks.put(newTask.getId(), newTask);
     }
 
@@ -288,7 +288,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getEpicSubtasks(int id) {
+    public ArrayList<Subtask> getEpicSubtasks(int id) throws TaskNotFoundException {
         if (!epics.containsKey(id)) {
             throw new TaskNotFoundException("Задача с данным ID не найдена");
         }
@@ -297,7 +297,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpicByID(int id) {
+    public Epic getEpicByID(int id) throws TaskNotFoundException {
         if (!epics.containsKey(id)) {
             throw new TaskNotFoundException("Задача с данным ID не найдена");
         }
@@ -369,7 +369,7 @@ public class InMemoryTaskManager implements TaskManager {
         return prioritizedTasks;
     }
 
-    private void addTaskToPrioritizedTasks(Task task) throws TaskOverlapException {
+    private void addTaskToPrioritizedTasks(Task task) {
         if (task.getStartTime().isPresent()) {
             try {
                 if (!hasTaskOverlap(task)) {

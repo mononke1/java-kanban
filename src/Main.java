@@ -63,5 +63,8 @@ public class Main {
         System.out.println(managers.getEpic());
         System.out.println(managers.getPrioritizedTasks());
         System.out.println(managers.getEpicSubtasks(3));
+        Task task4 = new Task("t2ask1", "test1", TaskStatus.NEW, 1);
+        managers.updateTask(task4);
+        System.out.println(managers.getTask());
     }
 }

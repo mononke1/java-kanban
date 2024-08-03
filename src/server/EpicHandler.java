@@ -156,7 +156,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                 if (object.has("duration") && object.has("startTime")) {
                     String startTimeStr = object.get("startTime").getAsString();
                     int durationInt = object.get("duration").getAsInt();
-                    LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+                    LocalDateTime startTime = LocalDateTime.parse(startTimeStr, FORMATTER);
                     Duration duration = Duration.ofMinutes(durationInt);
                     subtask = new Subtask(subtaskName, subtaskDescription, status, duration, startTime);
                 } else {

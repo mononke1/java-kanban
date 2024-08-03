@@ -1,5 +1,7 @@
 package taskmanagement;
 
 public enum TaskStatus {
-    NEW, IN_PROGRESS, DONE
+    NEW,
+    IN_PROGRESS,
+    DONE
 }

@@ -2,6 +2,7 @@ package server;
 
 import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
+import util.DateTimeUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class BaseHttpHandler {
     protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    protected static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    protected static final DateTimeFormatter FORMATTER = DateTimeUtils.FORMATTER;
     protected static Gson gson = HttpTaskServer.getGson();
 
     protected JsonObject createJsonObject(HttpExchange exchange) throws IOException {

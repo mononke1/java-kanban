@@ -128,7 +128,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         if (jsonObject.has("duration") && jsonObject.has("startTime")) {
             String startTimeStr = jsonObject.get("startTime").getAsString();
             int durationInt = jsonObject.get("duration").getAsInt();
-            LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+            LocalDateTime startTime = LocalDateTime.parse(startTimeStr, FORMATTER);
             Duration duration = Duration.ofMinutes(durationInt);
             return new Task(name, description, status, duration, startTime);
         }
