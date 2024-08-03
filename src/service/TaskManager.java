@@ -38,6 +38,8 @@ public interface TaskManager {
 
     Subtask getSubtaskByID(int id);
 
+    List<Subtask> getEpicSubtasks(int id);
+
     Epic getEpicByID(int id);
 
     void removeTaskByID(int id);

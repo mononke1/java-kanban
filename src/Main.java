@@ -62,14 +62,9 @@ public class Main {
         System.out.println(managers.getSubtask());
         System.out.println(managers.getEpic());
         System.out.println(managers.getPrioritizedTasks());
-        /*
-        File file = new File("tasks.csv");
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
-
-        System.out.println(fileBackedTaskManager.getTask());
-        System.out.println(fileBackedTaskManager.getSubtask());
-        System.out.println(fileBackedTaskManager.getEpic());
-        System.out.println(fileBackedTaskManager.getPrioritizedTasks());
-        */
+        System.out.println(managers.getEpicSubtasks(3));
+        Task task4 = new Task("t2ask1", "test1", TaskStatus.NEW, 1);
+        managers.updateTask(task4);
+        System.out.println(managers.getTask());
     }
 }

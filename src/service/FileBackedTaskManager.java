@@ -4,6 +4,7 @@ import taskmanagement.Epic;
 import taskmanagement.Subtask;
 import taskmanagement.Task;
 import taskmanagement.TaskStatus;
+import util.DateTimeUtils;
 
 import java.io.*;
 import java.time.Duration;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
     private static final String FIRST_LINE = String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", "id", "type", "name", "status", "description", "epic", "startTime", "endTime");
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeUtils.FORMATTER;
 
     public FileBackedTaskManager(File file) {
         this.file = file;
