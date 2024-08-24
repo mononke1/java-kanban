@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addTask(Task task) {
+    public void addTask(Task task) throws TaskOverlapException {
         if (task.getId() == 0) {
             int id = getID();
             task.setId(id);
@@ -49,7 +49,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubtask(Subtask subtask) {
+    public void addSubtask(Subtask subtask) throws TaskOverlapException {
         if (subtask.getId() == 0) {
             int id = getID();
             subtask.setId(id);
@@ -70,17 +70,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addEpic(Epic epic) {
+    public void addEpic(Epic epic) throws TaskOverlapException {
         if (epic.getId() == 0) {
             int id = getID();
             epic.setId(id);
-            epics.put(id, epic);
             if (!epic.getSubtasks().isEmpty()) {
                 for (Subtask subtask : epic.getSubtasks()) {
                     subtask.setEpicId(epic.getId());
                     addSubtask2(subtask);
                 }
             }
+            epics.put(id, epic);
             updateEpicTimes(epic);
             redefineStatus(epic);
         } else {
@@ -98,16 +98,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task newTask) {
-        Task task = tasks.get(newTask.getId());
-       if (prioritizedTasks.remove(task)) {
-           addTaskToPrioritizedTasks(newTask);
+    public void updateTask(Task newTask) throws TaskOverlapException, TaskNotFoundException {
+        Task task = Optional.ofNullable(tasks.get(newTask.getId()))
+                .orElseThrow(() -> new TaskNotFoundException("задача с данным id не найдена"));
+
+        if (prioritizedTasks.remove(task)) {
+            addTaskToPrioritizedTasks(newTask);
         }
+
         tasks.put(newTask.getId(), newTask);
     }
 
     @Override
-    public void updateSubtask(Subtask newSubtask) {
+    public void updateSubtask(Subtask newSubtask) throws TaskOverlapException, TaskNotFoundException {
+        if (!subtasks.containsKey(newSubtask.getId())) {
+            throw new TaskNotFoundException("задача с данным id не найдена");
+        }
         Subtask subtask = subtasks.get(newSubtask.getId());
         if (prioritizedTasks.remove(subtask)) {
             addTaskToPrioritizedTasks(newSubtask);
@@ -117,7 +123,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(Epic epic) {
+    public void updateEpic(Epic epic) throws TaskNotFoundException {
+        if (!epics.containsKey(epic.getId())) {
+            throw new TaskNotFoundException("задача с данным id не найдена");
+        }
         Epic oldEpic = epics.get(epic.getId());
 
         epic.getSubtasks().forEach(subtask -> subtask.setEpicId(epic.getId()));
@@ -259,38 +268,58 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskByID(int id) {
+    public Task getTaskByID(int id) throws TaskNotFoundException {
         if (tasks.containsKey(id)) {
             historyManager.add(tasks.get(id));
+            return tasks.get(id);
+        } else {
+            throw new TaskNotFoundException("задача с данным id не найдена");
         }
-        return tasks.get(id);
     }
 
     @Override
-    public Subtask getSubtaskByID(int id) {
+    public Subtask getSubtaskByID(int id) throws TaskNotFoundException {
         if (subtasks.containsKey(id)) {
             historyManager.add(subtasks.get(id));
+            return subtasks.get(id);
+        } else {
+            throw new TaskNotFoundException("задача с данным id не найдена");
         }
-        return subtasks.get(id);
     }
 
     @Override
-    public Epic getEpicByID(int id) {
-        if (epics.containsKey(id)) {
-            historyManager.add(epics.get(id));
+    public ArrayList<Subtask> getEpicSubtasks(int id) throws TaskNotFoundException {
+        if (!epics.containsKey(id)) {
+            throw new TaskNotFoundException("Задача с данным ID не найдена");
         }
+        historyManager.add(epics.get(id));
+        return epics.get(id).getSubtasks();
+    }
+
+    @Override
+    public Epic getEpicByID(int id) throws TaskNotFoundException {
+        if (!epics.containsKey(id)) {
+            throw new TaskNotFoundException("Задача с данным ID не найдена");
+        }
+        historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
-    public void removeTaskByID(int id) {
+    public void removeTaskByID(int id) throws TaskNotFoundException {
+        if (!tasks.containsKey(id)) {
+            throw new TaskNotFoundException("Задача с данным ID не найдена");
+        }
         Task task = tasks.remove(id);
         historyManager.remove(id);
         prioritizedTasks.remove(task);
     }
 
     @Override
-    public void removeSubtaskByID(int id) {
+    public void removeSubtaskByID(int id) throws TaskNotFoundException {
+        if (!subtasks.containsKey(id)) {
+            throw new TaskNotFoundException("Задача с данным ID не найдена");
+        }
         historyManager.remove(id);
         prioritizedTasks.remove(subtasks.get(id));
 
@@ -298,18 +327,20 @@ public class InMemoryTaskManager implements TaskManager {
 
         epics.values().stream()
                 .filter(epic -> epic.getSubtasks().contains(subtaskToRemove))
-                .findFirst()
-                .ifPresent(epic -> {
-                    epic.getSubtasks().remove(subtaskToRemove);
-                    updateEpicTimes(epic);
-                    redefineStatus(epic);
-                });
+                .findFirst().ifPresent(epic -> {
+            epic.getSubtasks().remove(subtaskToRemove);
+            updateEpicTimes(epic);
+            redefineStatus(epic);
+        });
 
         subtasks.remove(id);
     }
 
     @Override
-    public void removeEpicByID(int id) {
+    public void removeEpicByID(int id) throws TaskNotFoundException {
+        if (!epics.containsKey(id)) {
+            throw new TaskNotFoundException("Задача с данным ID не найдена");
+        }
         historyManager.remove(id);
 
         epics.get(id).getSubtasks().stream()
@@ -346,7 +377,7 @@ public class InMemoryTaskManager implements TaskManager {
                 } else {
                     throw new TaskOverlapException("Задача пересекается с существующей задачей.");
                 }
-            } catch (Exception e) {
+            } catch (TaskOverlapException e) {
                 throw new TaskOverlapException("Задача пересекается с существующей задачей.", e);
             }
         } else {
@@ -381,7 +412,7 @@ public class InMemoryTaskManager implements TaskManager {
         return false;
     }
 
-    private void addSubtask2(Subtask subtask) {
+    private void addSubtask2(Subtask subtask) throws TaskOverlapException {
         int id = getID();
         subtask.setId(id);
         addTaskToPrioritizedTasks(subtask);
